@@ -22,6 +22,9 @@ species <- doubs$fish  # Species data
 
 environment <- doubs$env  # Environmental data
 
+site_info <- doubs$xy # geographical information
+
+countryname_info <- doubs$species #the fish name in different country
 
 
 # Step 2: Connect to the PostgreSQL database
@@ -32,34 +35,39 @@ pg_conn <- dbConnect(
   
   RPostgres::Postgres(),
   
-  dbname = "postgres",
+  user = "admin", 
   
-  host = "127.0.0.1",
+  password = "admin", 
   
-  port = 5432,
+  dbname = "postgres", 
   
-  user = "admin",
+  host = "127.0.0.1", 
   
-  password = "admin"
+  port = 5432
   
-)
+  )
 
 
 
-# Step 4: Write data frames to the PostgreSQL database within the schema
+# Step 3: Write data frames to the PostgreSQL database within the schema
 
-# Write species data to the PostgreSQL schema
+# Write species data to the PostgreSQL
 
 dbWriteTable(pg_conn, "species", species, overwrite = TRUE)
 
-
-# Write environmental data to the PostgreSQL schema
+# Write environmental data to the PostgreSQL
 
 dbWriteTable(pg_conn, "environment", environment, overwrite = TRUE)
 
+# Write geographical data to the PostgreSQL
 
+dbWriteTable(pg_conn, "site_info", site_info, overwrite = TRUE)
 
-# Step 5: Disconnect from the PostgreSQL database
+# Write name data to the PostgreSQL
+
+dbWriteTable(pg_conn, "countryname_info", countryname_info, overwrite = TRUE)
+
+# Step 4: Disconnect from the PostgreSQL database
 
 dbDisconnect(pg_conn)
 
@@ -81,6 +89,10 @@ dbWriteTable(sqlite_conn, "species", species, overwrite = TRUE)
 dbWriteTable(sqlite_conn, "environment", environment, overwrite = TRUE)
 
 
+dbWriteTable(pg_conn, "site_info", site_info, overwrite = TRUE)
+
+
+dbWriteTable(pg_conn, "countryname_info", countryname_info, overwrite = TRUE)
 
 # Disconnect from SQLite
 
